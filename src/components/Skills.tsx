@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Brain, Code, Network } from "lucide-react";
+import { Brain, Code, Network, Gamepad2 } from "lucide-react";
 
 const skillCategories = [
   {
@@ -13,6 +13,16 @@ const skillCategories = [
     ]
   },
   {
+    title: "Game Development",
+    icon: <Gamepad2 className="w-5 h-5 text-orange-400" />,
+    skills: [
+      { name: "Pygame", percentage: 90 },
+      { name: "Algorithms", percentage: 85 },
+      { name: "Procedural Generation", percentage: 80 },
+      { name: "Game Design", percentage: 75 },
+    ]
+  },
+  {
     title: "Web Development",
     icon: <Code className="w-5 h-5 text-cyan-400" />,
     skills: [
@@ -20,16 +30,6 @@ const skillCategories = [
       { name: "TypeScript", percentage: 90 },
       { name: "Next.js", percentage: 85 },
       { name: "Tailwind CSS", percentage: 95 },
-    ]
-  },
-  {
-    title: "Infrastructure",
-    icon: <Network className="w-5 h-5 text-green-400" />,
-    skills: [
-      { name: "Docker", percentage: 80 },
-      { name: "Kubernetes", percentage: 70 },
-      { name: "AWS", percentage: 75 },
-      { name: "CI/CD", percentage: 85 },
     ]
   }
 ];

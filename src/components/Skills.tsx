@@ -31,6 +31,16 @@ const skillCategories = [
       { name: "Next.js", percentage: 85 },
       { name: "Tailwind CSS", percentage: 95 },
     ]
+  },
+  {
+    title: "Infrastructure",
+    icon: <Network className="w-5 h-5 text-green-400" />,
+    skills: [
+      { name: "Docker", percentage: 80 },
+      { name: "Kubernetes", percentage: 70 },
+      { name: "AWS", percentage: 75 },
+      { name: "CI/CD", percentage: 85 },
+    ]
   }
 ];
 
@@ -45,7 +55,7 @@ export default function Skills() {
           </h2>
         </div>
 
-        <div className="grid gap-12 md:grid-cols-3">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {skillCategories.map((category, i) => (
             <motion.div
               key={category.title}

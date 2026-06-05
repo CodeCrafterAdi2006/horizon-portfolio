@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import oneLineImg from "../assets/Screenshot 2026-06-05 092300.png";
 
 interface Project {
   id: string;
@@ -31,7 +32,7 @@ const projects: Project[] = [
     title: "1 Line a Day",
     category: "Python • Pygame • Algorithms • Game Design",
     year: "2024",
-    image: "/src/assets/one-line-a-day.png",
+    image: oneLineImg,
     link: "https://github.com/CodeCrafterAdi2006/one-line-a-day",
   },
 ];

@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import oneLineImg from "../assets/Screenshot 2026-06-05 092300.png";
+import shortsForgeImg from "../assets/shortsforge.png";
 
 interface Project {
   id: string;
@@ -13,11 +14,11 @@ interface Project {
 const projects: Project[] = [
   {
     id: "01",
-    title: "Aura Intelligence",
-    category: "React • TypeScript • OpenAI • Tailwind",
+    title: "ShortsForge",
+    category: "JavaScript • Node.js • Express • CSS",
     year: "2026",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
-    link: "#",
+    image: shortsForgeImg,
+    link: "https://github.com/CodeCrafterAdi2006/ShortsForge",
   },
   {
     id: "02",

@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import oneLineImg from "../assets/Screenshot 2026-06-05 092300.png";
 import shortsForgeImg from "../assets/shortsforge.png";
+import ariseImg from "../assets/arise.png";
 
 interface Project {
   id: string;
@@ -22,11 +23,11 @@ const projects: Project[] = [
   },
   {
     id: "02",
-    title: "Velox Ecosystem",
-    category: "Next.js • Node.js • Web3 • Postgres",
+    title: "ARISE: Life Engine CLI",
+    category: "Python • Diminishing Returns Math • Habit Tracker • CLI",
     year: "2026",
-    image: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=2564&auto=format&fit=crop",
-    link: "#",
+    image: ariseImg,
+    link: "https://github.com/CodeCrafterAdi2006/ARISE",
   },
   {
     id: "03",

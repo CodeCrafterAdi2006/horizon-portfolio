@@ -265,6 +265,19 @@ This log records files created, modified, visual additions, and compilation/debu
   * Pushed all updates directly to GitHub main branch.
 * **Status:** Verified. Pushed successfully.
 
+## [2026-07-01] - Loader Overlay unmounting & click Blocker Fix
+
+### 1. Parent-Level AnimatePresence Unmounting
+* **Files Modified:** `src/App.tsx`, `src/components/Loader.tsx`
+* **Changes Made:**
+  * Lifted the loader unmount state detection from the local component scope to parent `App.tsx` container scope.
+  * Wrapped the `<Loader />` component inside a conditional check (`isLoading && <Loader />`) enclosed inside `App.tsx`'s `<AnimatePresence>`.
+  * Removed internal `isDone` and local `<AnimatePresence>` toggles from `Loader.tsx`.
+  * This guarantees that when the workstation enter button is clicked, Vercel/React instantly unmounts the loader, removing its `z-[9999]` fixed canvas from the DOM tree, freeing pointer click registers.
+  * Pushed all fixes directly to GitHub remote repository main branch.
+* **Status:** Verified. Bundler compiles with zero errors and zero warnings in 3.92s.
+
+
 
 
 

@@ -23,7 +23,7 @@ An aspiring AI Engineer & Automation Architect. Focuses on building autonomous a
   projects: `SELECTED BUILDS:
 --------------------------------
 1. SHORTSFORGE: Autonomous short-form video assembly engine powered by Node.js, Express, and canvas rendering.
-2. VELOX ECOSYSTEM: Web3 live analytics dashboard and transactional telemetry.
+2. ARISE: Advanced command-line life simulation and habits-tracking engine modeling human attributes bottom-up.
 3. 1 LINE A DAY: Interactive digital journal with Pygame procedural generation features.`,
 
   contact: `COMMUNICATION PORTS:

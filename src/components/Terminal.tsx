@@ -67,7 +67,7 @@ Bio: Bridging intelligence thresholds and building high-performance systems.`;
       case "projects":
         output = `RETRIEVING SELECTED BUILDS:
   - ShortsForge (AI Video Automation Engine) -> [JS/Node.js/Express]
-  - Velox Ecosystem (Web3 Analytics Dashboard) -> [Next.js/Postgres]
+  - ARISE (Life Engine CLI Simulation) -> [Python/Pytest/CLI]
   - 1 Line a Day (Pygame Procedural Planner) -> [Python/Pygame]`;
         break;
 

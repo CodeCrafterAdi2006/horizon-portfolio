@@ -20,6 +20,7 @@ import Terminal from "./components/Terminal";
 import Experience from "./components/Experience";
 import About from "./components/About";
 import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +41,11 @@ export default function App() {
   return (
     <SmoothScroll>
       <div className="relative selection:bg-brand-accent selection:text-white min-h-screen">
-        <Loader onComplete={() => setIsLoading(false)} onEnter={() => setCurrentTrack("horizons")} />
+        <AnimatePresence>
+          {isLoading && (
+            <Loader onComplete={() => setIsLoading(false)} onEnter={() => setCurrentTrack("horizons")} />
+          )}
+        </AnimatePresence>
         <DynamicBackground />
         <CustomCursor />
         <div className="noise" />

@@ -1,3 +1,4 @@
+import React from "react";
 import { motion } from "framer-motion";
 import { Calendar, Briefcase, Award } from "lucide-react";
 import { playUiSound } from "../utils/audio";

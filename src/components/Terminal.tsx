@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Terminal as TermIcon, ArrowRight } from "lucide-react";
 import { playUiSound } from "../utils/audio";
 
@@ -38,12 +38,69 @@ Type 'help' to review available terminal protocols.`
     setCommandHistory((prev) => [...prev, cmd]);
     setHistoryIndex(-1);
 
+    if (trimmed.toLowerCase().startsWith("ai ")) {
+      const query = trimmed.substring(3).trim();
+      if (!query) {
+        setHistory((prev) => [...prev, { command: cmd, output: "Error: No query provided. Usage: 'ai <your question>'" }]);
+        setInput("");
+        return;
+      }
+      
+      setHistory((prev) => [...prev, { command: cmd, output: "[CONNECTING TO NEURAL COGNITIVE CORE...]" }]);
+      setInput("");
+
+      const ERROR_MESSAGES: Record<number, string> = {
+        400: 'Invalid query format detected.',
+        401: 'Authentication relay failed. Check API credentials.',
+        429: 'Neural network overloaded. Retry in 60 seconds.',
+        500: 'Core system malfunction. Retry soon.',
+        503: 'AI service unavailable. Check connection.',
+        504: 'Request timeout. Core uplink connection lost.',
+      };
+
+      (async () => {
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: query })
+          });
+
+          if (!res.ok) {
+            const errorMsg = ERROR_MESSAGES[res.status] || `System error (${res.status}).`;
+            throw new Error(errorMsg);
+          }
+          
+          const data = await res.json();
+          setHistory((prev) => {
+            const updated = [...prev];
+            const lastIdx = updated.length - 1;
+            if (lastIdx >= 0 && updated[lastIdx].command === cmd) {
+              updated[lastIdx].output = data.reply;
+            }
+            return updated;
+          });
+        } catch (err: any) {
+          setHistory((prev) => {
+            const updated = [...prev];
+            const lastIdx = updated.length - 1;
+            if (lastIdx >= 0 && updated[lastIdx].command === cmd) {
+              updated[lastIdx].output = `[UPLINK FAILED] - ${err.message}`;
+            }
+            return updated;
+          });
+        }
+      })();
+      return;
+    }
+
     switch (trimmed) {
       case "help":
         output = `Available commands in this workstation:
   whoami   - Display system pilot classification details
   skills   - Output Technical Telemetry diagnostic stack
   projects - Fetch Selected Artifact archive list
+  ai [msg] - Query the live Aditya OS AI telemetry core
   clear    - Clear terminal shell log buffer
   sudo hire aditya - Initiate recruitment sequence protocol`;
         break;

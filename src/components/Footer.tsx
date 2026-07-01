@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ArrowUpRight, Github, Linkedin, Instagram, Send, Cpu, Wifi } from "lucide-react";
 import { playUiSound } from "../utils/audio";
 

@@ -38,6 +38,7 @@ export default function About() {
 
               {/* Profile Image */}
               <img 
+                loading="lazy"
                 src="/me.png" 
                 alt="Aditya Singh Profile" 
                 className="w-full h-full object-cover opacity-80 filter brightness-90 contrast-105"

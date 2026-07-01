@@ -63,6 +63,7 @@ export default function CustomCursor() {
     <>
       {/* 1. Core Target Point (Zero-lag red laser dot) */}
       <motion.div
+        aria-hidden="true"
         className="fixed top-0 left-0 w-1.5 h-1.5 bg-brand-accent shadow-[0_0_8px_rgba(255,43,86,0.8)] rounded-full z-[9999] pointer-events-none"
         style={{
           x: mouseX,
@@ -77,6 +78,7 @@ export default function CustomCursor() {
 
       {/* 2. Outer HUD Crosshair Ring (Follows with spring inertia and spins on hover) */}
       <motion.div
+        aria-hidden="true"
         className="fixed top-0 left-0 w-8 h-8 rounded-full border border-brand-accent/40 z-[9999] pointer-events-none flex items-center justify-center"
         style={{
           x: cursorX,

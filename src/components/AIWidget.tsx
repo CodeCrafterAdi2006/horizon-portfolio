@@ -45,6 +45,17 @@ Submit any of these terms to query the database:
 const SUGGESTIONS = ["about", "skills", "projects", "contact"];
 
 export default function AIWidget() {
+  const activeControllerRef = useRef<AbortController | null>(null);
+
+  const ERROR_MESSAGES: Record<number, string> = {
+    400: 'Invalid query format detected.',
+    401: 'Authentication relay failed. Check API credentials.',
+    429: 'Neural network overloaded. Retry in 60 seconds.',
+    500: 'Core system malfunction. Retry soon.',
+    503: 'AI service unavailable. Check connection.',
+    504: 'Request timeout. Core uplink connection lost.',
+  };
+
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "system",
@@ -85,26 +96,41 @@ export default function AIWidget() {
     return `UNKNOWN QUERY: "${rawQuery}"\n--------------------------------\nNo matching record found in local core telemetry database. Type 'help' to review available query channels.`;
   };
 
-  const handleSend = (textToSend: string) => {
+  const handleSend = async (textToSend: string) => {
     if (!textToSend.trim() || isTyping) return;
 
-    // Check for local console clear command
     if (textToSend.toLowerCase().trim() === "clear") {
       setMessages([]);
       setInput("");
       return;
     }
 
-    // 1. Add User query message
+    if (activeControllerRef.current) {
+      activeControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    activeControllerRef.current = controller;
+
     setMessages((prev) => [...prev, { sender: "user", text: textToSend }]);
     setInput("");
     setIsTyping(true);
 
-    // 2. Simulate AI Telemetry Processing
-    setTimeout(() => {
-      const responseText = parseQuery(textToSend);
-      
-      // 3. Add Streaming/Typewriter Response Message
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: textToSend }),
+        signal: controller.signal
+      });
+
+      if (!response.ok) {
+        const errorText = ERROR_MESSAGES[response.status] || `System error (${response.status}).`;
+        throw new Error(errorText);
+      }
+
+      const data = await response.json();
+      const replyText = data.reply || "NO TELEMETRY RECORDED.";
+
       setMessages((prev) => [
         ...prev,
         { sender: "system", text: "", isStreaming: true }
@@ -112,21 +138,23 @@ export default function AIWidget() {
 
       let currentText = "";
       let index = 0;
-      
-      // Fast typewriter speed (20ms per character to keep UI snappy but retro)
+
       const interval = setInterval(() => {
-        if (index < responseText.length) {
-          currentText += responseText[index];
+        if (controller.signal.aborted) {
+          clearInterval(interval);
+          return;
+        }
+
+        if (index < replyText.length) {
+          currentText += replyText[index];
           setMessages((prev) => {
             const updated = [...prev];
             const lastMsg = updated[updated.length - 1];
-            if (lastMsg && lastMsg.isStreaming) {
+            if (lastMsg && lastMsg.isStreaming === true) {
               lastMsg.text = currentText;
             }
             return updated;
           });
-          
-          // Audio mechanical tick on every second character printed
           if (index % 2 === 0) {
             playUiSound("hover");
           }
@@ -144,7 +172,20 @@ export default function AIWidget() {
           setIsTyping(false);
         }
       }, 15);
-    }, 600); // 600ms analysis lag to feel realistic
+    } catch (err: any) {
+      if (err.name === 'AbortError') return;
+      console.error('Chat API uplink failure:', err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "system",
+          text: `[UPLINK FAILURE] - Core neural network link offline.\nReason: ${err.message}`
+        }
+      ]);
+      setIsTyping(false);
+    } finally {
+      activeControllerRef.current = null;
+    }
   };
 
   return (
@@ -202,7 +243,7 @@ export default function AIWidget() {
               }`}
             >
               {msg.text}
-              {msg.isStreaming && (
+              {msg.isStreaming === true && (
                 <span className="inline-block w-1.5 h-3 bg-brand-accent ml-0.5 animate-pulse" />
               )}
             </div>

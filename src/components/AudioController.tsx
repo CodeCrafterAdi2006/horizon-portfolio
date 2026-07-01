@@ -1,8 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
-export default function AudioController() {
-  const [currentTrack, setCurrentTrack] = useState<"off" | "horizons" | "ascension">("off");
+interface AudioControllerProps {
+  currentTrack: "off" | "horizons" | "ascension";
+  setCurrentTrack: React.Dispatch<React.SetStateAction<"off" | "horizons" | "ascension">>;
+}
+
+export default function AudioController({ currentTrack, setCurrentTrack }: AudioControllerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Initialize Audio once on mount

@@ -23,6 +23,7 @@ import { useState, useEffect } from "react";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [currentTrack, setCurrentTrack] = useState<"off" | "horizons" | "ascension">("off");
 
   // Prevent scrolling while loader is active
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function App() {
   return (
     <SmoothScroll>
       <div className="relative selection:bg-brand-accent selection:text-white min-h-screen">
-        <Loader onComplete={() => setIsLoading(false)} />
+        <Loader onComplete={() => setIsLoading(false)} onEnter={() => setCurrentTrack("horizons")} />
         <DynamicBackground />
         <CustomCursor />
         <div className="noise" />
@@ -93,7 +94,7 @@ export default function App() {
         />
         
         <Footer />
-        <AudioController />
+        <AudioController currentTrack={currentTrack} setCurrentTrack={setCurrentTrack} />
       </div>
     </SmoothScroll>
   );

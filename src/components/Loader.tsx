@@ -4,6 +4,7 @@ import { playUiSound } from "../utils/audio";
 
 interface LoaderProps {
   onComplete: () => void;
+  onEnter?: () => void;
 }
 
 export default function Loader({ onComplete }: LoaderProps) {
@@ -43,6 +44,7 @@ export default function Loader({ onComplete }: LoaderProps) {
 
   const handleEnter = () => {
     playUiSound("click");
+    if (onEnter) onEnter();
     setIsDone(true);
     setTimeout(onComplete, 800); // Give time for exit fade transition
   };

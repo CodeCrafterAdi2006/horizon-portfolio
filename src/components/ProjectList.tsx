@@ -40,14 +40,14 @@ const projects: Project[] = [
 
 export default function ProjectList() {
   return (
-    <section id="work" className="py-32 px-8 md:px-12 bg-transparent border-b border-white/5 relative z-10">
+    <section id="projects" className="py-32 px-8 md:px-12 bg-transparent border-b border-white/5 relative z-10">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-end mb-16 border-b border-white/5 pb-8">
+        <div className="flex justify-between items-end mb-16 border-b border-border-subtle/50 pb-8">
           <div className="flex flex-col gap-2">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">Portfolio Archive</span>
-            <h2 className="text-white text-3xl md:text-5xl font-light tracking-tighter uppercase">Selected <span className="italic font-serif text-brand-text">Artifacts</span></h2>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-brand-dark font-mono">// selected.artifacts</span>
+            <h2 className="text-white text-3xl md:text-4xl font-display font-extrabold tracking-tighter uppercase">Selected <span className="text-brand-accent neon-text-glow">Artifacts</span></h2>
           </div>
-          <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest hidden md:block">
+          <div className="text-[10px] font-mono text-brand-dark uppercase tracking-widest hidden md:block">
             System Core 1.0
           </div>
         </div>
@@ -63,37 +63,46 @@ export default function ProjectList() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: i * 0.1 }}
-              className="group cursor-pointer bg-brand-bg p-8 md:p-12 transition-colors relative overflow-hidden"
+              className="group cursor-pointer bg-brand-bg/40 p-8 md:p-12 hover:bg-black/30 border border-border-subtle/40 hover:border-brand-accent/25 transition-all duration-300 relative overflow-hidden"
             >
               {/* Neon Glow Hover State */}
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-0 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/5 via-brand-secondary/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-0 pointer-events-none" />
               
               <div className="relative z-10">
-                <div className="aspect-[16/9] overflow-hidden bg-black/5 mb-10 border border-white/5 relative">
+                <div className="aspect-[16/9] overflow-hidden bg-black/35 mb-10 border border-border-subtle/50 relative group/img">
+                  {/* Glowing HUD Target Lock Corners */}
+                  <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t-2 border-l-2 border-brand-accent opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-300 pointer-events-none z-20" />
+                  <div className="absolute top-2.5 right-2.5 w-3 h-3 border-t-2 border-r-2 border-brand-accent opacity-0 group-hover:opacity-100 group-hover:-translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-300 pointer-events-none z-20" />
+                  <div className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b-2 border-l-2 border-brand-accent opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 pointer-events-none z-20" />
+                  <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b-2 border-r-2 border-brand-accent opacity-0 group-hover:opacity-100 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 pointer-events-none z-20" />
+
+                  {/* Holographic Diagnostic Scanline */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-brand-accent/0 via-brand-accent/15 to-brand-accent/0 w-full h-[30%] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10 animate-scanline-sweep" />
+
                   <motion.img
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    whileHover={{ scale: 1.03 }}
+                    transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                    className="w-full h-full object-cover opacity-75 group-hover:opacity-95 transition-opacity"
                   />
                 </div>
 
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className="text-[10px] font-mono mb-3 block text-white/20 uppercase tracking-widest">{project.id} // PROJECT</span>
-                    <h3 className="text-xl md:text-2xl font-light text-white uppercase tracking-tight mb-4">
+                    <span className="text-[10px] font-mono mb-3 block text-brand-dark uppercase tracking-widest">{project.id} // SELECTED_BUILD</span>
+                    <h3 className="text-xl md:text-2xl font-display font-bold text-white uppercase tracking-tight mb-4 group-hover:text-brand-accent transition-colors">
                       {project.title}
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {project.category.split(' • ').map(tech => (
-                        <span key={tech} className="inline-flex h-6 items-center justify-center rounded-full border border-white/10 bg-black/50 px-3 py-0.5 text-[10px] font-mono text-white/70 group-hover:border-white/20 group-hover:bg-white/10 transition-colors">
+                        <span key={tech} className="inline-flex h-6 items-center justify-center rounded border border-border-subtle bg-black/40 px-3 py-0.5 text-[9px] font-mono text-zinc-300 group-hover:border-brand-accent/35 group-hover:bg-brand-accent/5 transition-colors">
                           {tech}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <div className="w-10 h-10 border border-white/5 flex items-center justify-center text-[10px] group-hover:bg-white group-hover:text-black transition-all shrink-0 ml-4">
+                  <div className="w-12 h-12 border border-border-subtle bg-black/40 text-brand-accent flex items-center justify-center font-mono text-xs rounded shadow-[0_0_8px_rgba(255,43,86,0.05)] group-hover:border-brand-accent group-hover:bg-brand-accent group-hover:text-white transition-all duration-300 shrink-0 ml-4">
                     {project.year}
                   </div>
                 </div>

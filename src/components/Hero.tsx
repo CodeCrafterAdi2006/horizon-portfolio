@@ -1,96 +1,120 @@
-import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowDownRight } from "lucide-react";
-import { useRef } from "react";
+import { motion } from "framer-motion";
+import { ArrowDownRight, Download, Terminal } from "lucide-react";
+import { playUiSound } from "../utils/audio";
 
 export default function Hero() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  // Parallax and fade transforms
-  const textY = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const textScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const handleScrollToWork = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const el = document.getElementById("projects");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section
-      ref={containerRef}
-      className="relative min-h-[120vh] flex flex-col justify-start pt-40 md:pt-0 md:justify-center px-8 md:px-12 grid-bg border-b border-border-subtle overflow-hidden"
+      id="hero"
+      className="relative flex flex-col gap-6 py-16 md:py-24 px-6 md:px-8 border-b border-border-subtle bg-transparent overflow-hidden"
     >
-      {/* Background layer for grid parallax */}
-      <motion.div
-        style={{ y: gridY }}
-        className="absolute inset-0 pointer-events-none grid-bg opacity-30"
-      />
+      {/* HUD profile classification indicator */}
+      <div className="text-[10px] font-mono tracking-widest text-brand-dark uppercase">
+        // workstation.profile
+      </div>
 
-      <motion.div
-        style={{ y: textY, opacity: textOpacity, scale: textScale }}
-        className="max-w-7xl mx-auto w-full pt-20 grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10"
+      <div className="flex flex-col gap-2">
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-xs font-mono tracking-widest text-brand-muted uppercase"
+        >
+          Hello, I'm
+        </motion.p>
+
+        {/* Partial glitch title: ADI is fancy/glitchy, TYA is static and clean */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.0, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-white text-5xl md:text-7xl font-display font-extrabold tracking-tighter uppercase leading-none select-none inline-block"
+        >
+          <span className="glitch relative" data-text="ADI">ADI</span>
+          <span className="glitch-subtle text-white/90 relative" data-text="TYA">TYA</span>
+          <span className="text-brand-accent animate-pulse">_</span>
+        </motion.h1>
+
+        {/* Subtitle taglines in neon styling */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-[10px] md:text-xs text-brand-accent font-mono tracking-wider font-semibold uppercase flex flex-wrap gap-2 items-center mt-2"
+        >
+          <span>AI Engineer</span>
+          <span className="text-brand-dark">•</span>
+          <span>Automation Enthusiast</span>
+          <span className="text-brand-dark">•</span>
+          <span>Problem Solver</span>
+        </motion.div>
+      </div>
+
+      {/* Profile Statement */}
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.35 }}
+        className="text-brand-muted leading-relaxed max-w-xl mt-4 font-mono text-[11px] tracking-wider"
       >
-        <div className="md:col-span-7 flex flex-col justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs text-white backdrop-blur-sm self-start"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
-            </span>
-            Available for new projects
-          </motion.div>
+        I build <span className="hover-glow-accent font-bold text-white">&gt; intelligent_systems</span>, 
+        automate <span className="hover-glow-accent font-bold text-white">&gt; complex_workflows</span>, 
+        and craft digital experiences that make an impact. Specializing in bridging the gap between raw AI capabilities and 
+        <span className="hover-glow-accent font-bold text-white"> &gt; production_grade_architecture</span>.
+      </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-[10px] text-white/40 uppercase tracking-[0.3em] mb-6 flex items-center gap-4"
-          >
-            <span className="bg-white/10 text-white px-2 py-0.5 rounded-sm">Concept Alpha</span>
-            <span>Digital Architect</span>
-          </motion.div>
+      {/* Actions Tray */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.0, delay: 0.4 }}
+        className="flex flex-wrap gap-4 mt-6"
+      >
+        {/* Explore Work Button (Neon active state) */}
+        <a
+          href="#projects"
+          onMouseEnter={() => playUiSound("hover")}
+          onClick={(e) => {
+            playUiSound("click");
+            handleScrollToWork(e);
+          }}
+          className="group px-5 py-3 bg-brand-accent/5 border border-brand-accent/20 text-white rounded text-xs font-mono tracking-widest hover:bg-brand-accent hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(255,43,86,0.05)] hover:shadow-[0_0_20px_rgba(255,43,86,0.2)] flex items-center gap-2 cursor-pointer"
+        >
+          <span className="font-semibold">EXPLORE MY WORK</span>
+          <ArrowDownRight size={14} className="group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
+        </a>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-white text-[12vw] md:text-[8vw] font-light leading-[0.9] tracking-tighter"
-          >
-            Building the <br />
-            <span className="italic font-serif text-brand-text">Excellence</span> Standard
-          </motion.h1>
+        {/* Download Resume Button (HUD panel state) */}
+        <a
+          href="/resume_automation_ai.pdf"
+          download="Aditya_Singh_Resume.pdf"
+          onMouseEnter={() => playUiSound("hover")}
+          onClick={() => playUiSound("click")}
+          className="px-5 py-3 bg-white/[0.01] border border-border-subtle text-brand-muted hover:text-white hover:border-brand-dark/40 rounded text-xs font-mono tracking-widest transition-all duration-300 flex items-center gap-2 cursor-pointer"
+        >
+          <span>DOWNLOAD RESUME</span>
+          <Download size={14} />
+        </a>
+      </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-12 text-sm leading-relaxed max-w-sm text-zinc-500"
-          >
-            Exploring the intersection of software engineering, artificial intelligence, and user-centered design.
-          </motion.p>
-        </div>
-
-        <div className="md:col-span-5 flex flex-col justify-center md:items-end gap-12">
-          <div className="flex flex-col gap-8 md:text-right">
-            <div className="flex items-center gap-4 md:justify-end">
-              <span className="text-4xl font-serif italic text-white/10">01</span>
-              <div>
-                <h3 className="text-white text-[10px] uppercase tracking-wider">Current Module</h3>
-                <p className="text-[10px] text-zinc-600">Visual Hierarchy & Grid Design</p>
-              </div>
-            </div>
-          </div>
-
-          <a href="#work" className="flex items-center gap-4 group cursor-pointer">
-            <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">Explore Projects</div>
-            <div className="w-10 h-10 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
-              <ArrowDownRight size={16} />
-            </div>
-          </a>
-        </div>
+      {/* Active telemetry block (Bottom of Hero) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="mt-8 flex items-center gap-3 border border-border-subtle bg-white/[0.01] rounded px-4 py-3 self-start text-[10px] font-mono text-brand-dark"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-accent opacity-75"></span>
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-accent"></span>
+        </span>
+        <span className="text-brand-muted">&gt; CURRENT FOCUS: AGENTIC WORKFLOWS & AUTOMATIONS</span>
       </motion.div>
     </section>
   );

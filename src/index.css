@@ -5,11 +5,15 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
   --font-serif: "Playfair Display", serif;
-  --color-brand-bg: transparent;
-  --color-brand-accent: #FFFFFF;
-  --color-brand-text: #A1A1AA;
-  --color-brand-muted: #52525B;
-  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  
+  /* Cyber-Zen Red Palette */
+  --color-brand-bg: #030303;
+  --color-brand-accent: #FF2B56;
+  --color-brand-secondary: #FF66A3;
+  --color-brand-text: #F8FAFC;
+  --color-brand-muted: #CBD5E1;
+  --color-brand-dark: #8E9CAE;
+  --color-border-subtle: rgba(255, 43, 86, 0.15);
 }
 
 @layer base {
@@ -19,21 +23,36 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    overflow-x: hidden;
   }
+
   ::selection {
-    background-color: white;
-    color: black;
+    background-color: var(--color-brand-accent);
+    color: #ffffff;
   }
-  
-  .theme-light {
-    --color-white: #050505;
-    --color-black: #ffffff;
-    --color-brand-accent: #050505;
-    --color-brand-text: #3f3f46;
+
+  /* Custom Webkit scrollbar for terminal/HUD panels */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(3, 3, 3, 0.5);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 43, 86, 0.3);
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand-accent);
   }
 }
 
 @layer components {
+  /* Noise Overlay */
   .noise {
     position: fixed;
     top: 0;
@@ -41,15 +60,331 @@
     width: 100%;
     height: 100%;
     content: "";
-    opacity: 0.02;
+    opacity: 0.015;
     z-index: 50;
     pointer-events: none;
     background-image: url("https://grainy-gradients.vercel.app/noise.svg");
   }
 
+  /* Cyber Grid Background */
   .grid-bg {
-    background-size: 60px 60px;
-    background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 43, 86, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 43, 86, 0.02) 1px, transparent 1px);
+  }
+
+  /* Frosted Glass Panels */
+  .glass-panel {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background: rgba(4, 4, 6, 0.7);
+    border: 1px solid rgba(255, 43, 86, 0.12);
+    box-shadow: 
+      0 10px 30px -10px rgba(0, 0, 0, 0.7),
+      inset 0 0 15px rgba(255, 43, 86, 0.03);
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-panel-hover {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  .glass-panel-hover:hover {
+    border-color: rgba(255, 43, 86, 0.3);
+    box-shadow: 
+      0 15px 35px -5px rgba(0, 0, 0, 0.8),
+      0 0 20px rgba(255, 43, 86, 0.1),
+      inset 0 0 20px rgba(255, 43, 86, 0.05);
+  }
+
+  /* Cyber Neon Text Glow */
+  .neon-text {
+    text-shadow: 
+      0 0 5px rgba(255, 43, 86, 0.4),
+      0 0 15px rgba(255, 43, 86, 0.2);
+  }
+
+  .neon-text-pink {
+    text-shadow: 
+      0 0 5px rgba(255, 102, 163, 0.4),
+      0 0 15px rgba(255, 102, 163, 0.2);
+  }
+
+  /* Scanline Overlay Effect */
+  .hud-scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%, 
+      rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 45;
+    pointer-events: none;
+    opacity: 0.15;
+  }
+
+  /* Premium Cyberpunk Glitch Effect */
+  .glitch {
+    position: relative;
+    display: inline-block;
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    opacity: 0.8;
+  }
+
+  /* Glitch Red/Cyan offsets - increased offsets for dramatic splits */
+  .glitch::before {
+    left: 4px;
+    text-shadow: -3px 0 var(--color-brand-accent);
+    clip: rect(24px, 550px, 90px, 0);
+    animation: cyber-glitch-1 4.5s infinite linear alternate-reverse;
+  }
+
+  .glitch::after {
+    left: -4px;
+    text-shadow: -3px 0 var(--color-brand-secondary);
+    clip: rect(85px, 550px, 140px, 0);
+    animation: cyber-glitch-2 3.5s infinite linear alternate-reverse;
+  }
+
+  /* 
+    Intense skews and clips for the first 50% of the timeline,
+    completely static and calm for the second 50% of the timeline.
+  */
+  @keyframes cyber-glitch-1 {
+    0% {
+      clip: rect(12px, 9999px, 35px, 0);
+      transform: skew(2deg) translate(2px, -1px);
+    }
+    5% {
+      clip: rect(85px, 9999px, 110px, 0);
+      transform: skew(-3deg) translate(-2px, 1px);
+    }
+    10% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+    15% {
+      clip: rect(44px, 9999px, 95px, 0);
+      transform: skew(1.5deg) translate(1px, -2px);
+    }
+    20% {
+      clip: rect(100px, 9999px, 140px, 0);
+      transform: skew(-2.5deg) translate(-1px, 2px);
+    }
+    25% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+    30% {
+      clip: rect(10px, 9999px, 55px, 0);
+      transform: skew(3deg) translate(3px, 1px);
+    }
+    35% {
+      clip: rect(60px, 9999px, 120px, 0);
+      transform: skew(-1deg) translate(-2px, -1px);
+    }
+    40% {
+      clip: rect(30px, 9999px, 75px, 0);
+      transform: skew(0.5deg) translate(1px, 2px);
+    }
+    45% {
+      clip: rect(80px, 9999px, 130px, 0);
+      transform: skew(-2deg) translate(-1px, -2px);
+    }
+    50%, 100% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+  }
+
+  @keyframes cyber-glitch-2 {
+    0% {
+      clip: rect(70px, 9999px, 105px, 0);
+      transform: skew(-1.5deg) translate(-1px, 2px);
+    }
+    5% {
+      clip: rect(15px, 9999px, 55px, 0);
+      transform: skew(2.5deg) translate(2px, -1px);
+    }
+    10% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+    15% {
+      clip: rect(95px, 9999px, 135px, 0);
+      transform: skew(-2deg) translate(-2px, 1px);
+    }
+    20% {
+      clip: rect(30px, 9999px, 75px, 0);
+      transform: skew(1.8deg) translate(1px, -2px);
+    }
+    25% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+    30% {
+      clip: rect(110px, 9999px, 140px, 0);
+      transform: skew(-3deg) translate(-2px, 2px);
+    }
+    35% {
+      clip: rect(20px, 9999px, 80px, 0);
+      transform: skew(1deg) translate(1px, -1px);
+    }
+    40% {
+      clip: rect(50px, 9999px, 100px, 0);
+      transform: skew(-0.5deg) translate(-1px, 1px);
+    }
+    45% {
+      clip: rect(10px, 9999px, 60px, 0);
+      transform: skew(2deg) translate(2px, -2px);
+    }
+    50%, 100% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+  }
+
+  /* Subtle Cyberpunk Glitch Effect (For TYA) */
+  .glitch-subtle {
+    position: relative;
+    display: inline-block;
+  }
+
+  .glitch-subtle::before,
+  .glitch-subtle::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    opacity: 0.6;
+  }
+
+  /* Narrower 1.5px splits */
+  .glitch-subtle::before {
+    left: 1.5px;
+    text-shadow: -1px 0 var(--color-brand-accent);
+    clip: rect(30px, 550px, 75px, 0);
+    animation: cyber-glitch-subtle-1 5s infinite linear alternate-reverse;
+  }
+
+  .glitch-subtle::after {
+    left: -1.5px;
+    text-shadow: -1px 0 var(--color-brand-secondary);
+    clip: rect(60px, 550px, 120px, 0);
+    animation: cyber-glitch-subtle-2 4s infinite linear alternate-reverse;
+  }
+
+  /* Slow timing: 90% static, 10% tiny flicker */
+  @keyframes cyber-glitch-subtle-1 {
+    0%, 90% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+    93% {
+      clip: rect(20px, 9999px, 50px, 0);
+      transform: skew(0.5deg) translate(1px, 0px);
+    }
+    96% {
+      clip: rect(75px, 9999px, 100px, 0);
+      transform: skew(-0.5deg) translate(-1px, 0px);
+    }
+    100% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+  }
+
+  @keyframes cyber-glitch-subtle-2 {
+    0%, 90% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+    93% {
+      clip: rect(60px, 9999px, 90px, 0);
+      transform: skew(-0.4deg) translate(-1px, 0px);
+    }
+    96% {
+      clip: rect(10px, 9999px, 40px, 0);
+      transform: skew(0.4deg) translate(1px, 0px);
+    }
+    100% {
+      clip: rect(0px, 9999px, 0px, 0);
+      transform: skew(0deg) translate(0px, 0px);
+    }
+  }
+
+  /* Scanline sweep animation for project images */
+  .animate-scanline-sweep {
+    animation: scanline-sweep 3s linear infinite;
+  }
+
+  @keyframes scanline-sweep {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(350%);
+    }
+  }
+
+  /* Breathing neon text shadow glow (Crimson to Pink shifts) */
+  .neon-text-glow {
+    text-shadow: 0 0 6px rgba(255, 43, 86, 0.4);
+    animation: neon-color-shift 7s ease-in-out infinite;
+  }
+
+  @keyframes neon-color-shift {
+    0%, 100% {
+      text-shadow: 
+        0 0 4px rgba(255, 43, 86, 0.45),
+        0 0 10px rgba(255, 43, 86, 0.15);
+      color: #F8FAFC;
+    }
+    50% {
+      text-shadow: 
+        0 0 4px rgba(255, 102, 163, 0.55),
+        0 0 10px rgba(255, 102, 163, 0.2);
+      color: #ffffff;
+    }
+  }
+
+  /* Interactive hover text glow */
+  .hover-glow-accent {
+    color: var(--color-brand-text);
+    transition: all 0.2s ease-in-out;
+  }
+  .hover-glow-accent:hover {
+    color: var(--color-brand-accent);
+    text-shadow: 0 0 8px rgba(255, 43, 86, 0.6);
+    cursor: default;
+  }
+
+  /* Terminal blinking block cursor */
+  .cursor-blink {
+    animation: terminal-cursor-blink 1s step-end infinite;
+  }
+  @keyframes terminal-cursor-blink {
+    from, to { opacity: 0; }
+    50% { opacity: 1; }
   }
 }
+

@@ -1,99 +1,143 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Brain, Code, Network, Gamepad2 } from "lucide-react";
 
-const skillCategories = [
+interface Skill {
+  name: string;
+  percentage: number;
+}
+
+interface SkillCategory {
+  title: string;
+  icon: React.ReactNode;
+  colorClass: string;
+  skills: Skill[];
+}
+
+const skillCategories: SkillCategory[] = [
   {
-    title: "AI/ML Learning",
-    icon: <Brain className="w-5 h-5 text-purple-400" />,
+    title: "AI & AGENT ARCHITECTURES",
+    icon: <Brain className="w-4 h-4 text-brand-accent" />,
+    colorClass: "border-brand-accent/20 text-brand-accent",
     skills: [
-      { name: "PyTorch", percentage: 95 },
-      { name: "LangChain", percentage: 90 },
-      { name: "TensorFlow", percentage: 80 },
-      { name: "OpenCV", percentage: 75 },
+      { name: "PyTorch (Deep Learning)", percentage: 95 },
+      { name: "LangChain (LLM Agents)", percentage: 90 },
+      { name: "TensorFlow (Models)", percentage: 80 },
+      { name: "OpenCV (Computer Vision)", percentage: 75 },
     ]
   },
   {
-    title: "Game Development",
-    icon: <Gamepad2 className="w-5 h-5 text-orange-400" />,
+    title: "GAME DESIGN & SIMULATIONS",
+    icon: <Gamepad2 className="w-4 h-4 text-brand-secondary" />,
+    colorClass: "border-brand-secondary/20 text-brand-secondary",
     skills: [
-      { name: "Pygame", percentage: 90 },
-      { name: "Algorithms", percentage: 85 },
+      { name: "Pygame framework", percentage: 90 },
+      { name: "Complexity Algorithms", percentage: 85 },
       { name: "Procedural Generation", percentage: 80 },
-      { name: "Game Design", percentage: 75 },
+      { name: "Physics & Collisions", percentage: 75 },
     ]
   },
   {
-    title: "Web Development",
-    icon: <Code className="w-5 h-5 text-cyan-400" />,
+    title: "FULL-STACK WEB RELAYS",
+    icon: <Code className="w-4 h-4 text-white" />,
+    colorClass: "border-white/10 text-white",
     skills: [
-      { name: "React", percentage: 95 },
-      { name: "TypeScript", percentage: 90 },
-      { name: "Next.js", percentage: 85 },
-      { name: "Tailwind CSS", percentage: 95 },
+      { name: "React / Typescript", percentage: 95 },
+      { name: "Next.js Framework", percentage: 85 },
+      { name: "Node.js & Express API", percentage: 90 },
+      { name: "Tailwind CSS v4", percentage: 95 },
     ]
   },
   {
-    title: "Infrastructure",
-    icon: <Network className="w-5 h-5 text-green-400" />,
+    title: "AUTOMATION & SYSTEMS",
+    icon: <Network className="w-4 h-4 text-brand-dark" />,
+    colorClass: "border-brand-dark/20 text-brand-dark",
     skills: [
-      { name: "Docker", percentage: 80 },
-      { name: "Kubernetes", percentage: 70 },
-      { name: "AWS", percentage: 75 },
-      { name: "CI/CD", percentage: 85 },
+      { name: "Docker containers", percentage: 80 },
+      { name: "CI/CD (Github Actions)", percentage: 85 },
+      { name: "AWS Cloud Deployments", percentage: 75 },
+      { name: "n8n / API Automation", percentage: 90 },
     ]
   }
 ];
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-32 px-8 md:px-12 relative z-10 border-b border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-16 border-b border-white/5 pb-8">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 block mb-2">// core_competencies</span>
-          <h2 className="text-white text-3xl md:text-5xl font-light tracking-tighter uppercase">
-            Technical <span className="italic font-serif text-brand-text">Stack</span>
+    <section id="skills" className="py-24 px-6 md:px-8 relative z-10 border-b border-border-subtle">
+      <div className="max-w-7xl mx-auto flex flex-col gap-12">
+        
+        {/* Section Header */}
+        <div className="border-b border-border-subtle pb-4">
+          <span className="text-[10px] uppercase tracking-widest text-brand-dark block mb-2 font-mono">// technical.telemetry</span>
+          <h2 className="text-white text-3xl md:text-4xl font-display font-extrabold tracking-tighter uppercase">
+            Technical <span className="text-brand-accent neon-text-glow">Stack</span>
           </h2>
         </div>
 
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+        {/* Categories Grid */}
+        <div className="grid gap-6 md:grid-cols-2">
           {skillCategories.map((category, i) => (
             <motion.div
               key={category.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.1 }}
-              className="flex flex-col gap-6 p-8 rounded-xl border border-white/5 bg-black/40 shadow-xl"
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="glass-panel p-6 flex flex-col gap-6 hover:border-brand-accent/30 hover:shadow-[0_0_20px_rgba(255,43,86,0.03)] transition-all duration-300"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/50">
+              {/* Category Header */}
+              <div className="flex items-center gap-3 border-b border-border-subtle/40 pb-3">
+                <div className={`flex h-8 w-8 items-center justify-center rounded border bg-black/45 ${category.colorClass}`}>
                   {category.icon}
                 </div>
-                <h3 className="font-semibold text-white tracking-wide">{category.title}</h3>
+                <h3 className="font-display font-bold text-white text-xs tracking-wider uppercase">
+                  {category.title}
+                </h3>
               </div>
 
-              <div className="space-y-6">
-                {category.skills.map((skill, j) => (
-                  <div key={skill.name}>
-                    <div className="mb-2 flex items-center justify-between">
-                      <span className="text-xs font-mono text-white/80">{skill.name}</span>
-                      <span className="text-[10px] font-mono text-white/40">{skill.percentage}%</span>
+              {/* Skills list with Segmented LED Bars */}
+              <div className="flex flex-col gap-5">
+                {category.skills.map((skill) => {
+                  const totalBlocks = 10;
+                  const activeBlocks = Math.round(skill.percentage / 10);
+
+                  return (
+                    <div key={skill.name} className="flex flex-col gap-2">
+                      <div className="flex justify-between items-center text-[10px] font-mono tracking-wider">
+                        <span className="text-white uppercase font-medium">{skill.name}</span>
+                        <span className="text-brand-accent font-bold">{skill.percentage}%</span>
+                      </div>
+                      
+                      {/* Segmented LED Progress Bar */}
+                      <div className="flex gap-[3px] h-2.5 w-full bg-black/20 p-[2px] border border-border-subtle/30 rounded-sm">
+                        {Array.from({ length: totalBlocks }).map((_, idx) => {
+                          const isActive = idx < activeBlocks;
+                          return (
+                            <motion.div
+                              key={idx}
+                              initial={{ opacity: 0 }}
+                              whileInView={{ opacity: isActive ? 1 : 0.15 }}
+                              viewport={{ once: true }}
+                              transition={{ 
+                                duration: 0.3, 
+                                delay: 0.1 + (idx * 0.05) 
+                              }}
+                              className={`h-full flex-1 rounded-xs transition-all duration-300 ${
+                                isActive
+                                  ? "bg-brand-accent shadow-[0_0_8px_rgba(255,43,86,0.4)]"
+                                  : "bg-brand-dark/20"
+                              }`}
+                            />
+                          );
+                        })}
+                      </div>
                     </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.percentage}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.5, delay: 0.2 + (j * 0.1), ease: "easeOut" }}
-                        className="h-full rounded-full bg-gradient-to-r from-white/40 to-white"
-                      />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </motion.div>
           ))}
         </div>
+        
       </div>
     </section>
   );
